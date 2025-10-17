@@ -1,0 +1,38 @@
+#!/bin/env python
+"""
+IMPORTANT NOTE!!
+The documentation at developer.cisco is flat out incorrect as to how device info is returned via the Meraki Dashboard API.
+
+For reference, see: https://developer.cisco.com/meraki/api-v1/getting-started/#find-your-devices-and-their-serials
+^^^ this is wrong. 
+Their version: 
+response = dashboard.organizations.getOrganizationDevices({organizationId})  # this will 404-error you all day
+Correct version: 
+response = dashboard.networks.getNetworkDevices(organizationId) 
+
+Pay particular note of the fact that the SDK's negotiated path here is dashboard.networks, not dashboard.organizations.
+There has GOT to be better documentation for this somewhere, just not with Cisco, apparently.  10/16 MG 
+
+"""
+import meraki
+from lehost import MERAKI_DASHBOARD_API_KEY as lekey
+from get_org_id import get_org_id
+from get_network_id import get_network_id   
+
+
+def devices():
+    dashboard = meraki.DashboardAPI(lekey)
+    organization_id = get_org_id()
+    # print(f"muh organ: {organization_id}")
+    network_id = get_network_id(organization_id) 
+    # print(f"muh net: {network_id}")
+    devices = dashboard.networks.getNetworkDevices(network_id)
+    import json; print(json.dumps(devices, indent=3))  # check output
+    
+    
+def main():
+    devices()
+      
+
+if __name__ == "__main__":
+    main()      

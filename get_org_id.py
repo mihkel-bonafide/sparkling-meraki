@@ -10,7 +10,7 @@ def get_org_id():
     for org in organizations:
         if org['name'] == ORGANIZATION_NAME:
             org_id = org['id']
-            print(f"Organization ID for '{ORGANIZATION_NAME}' is: {org_id}")
+            print(f"Organization ID for '{ORGANIZATION_NAME}' is: {org_id}")  # this is to verify it works
             return org_id
     return None
 

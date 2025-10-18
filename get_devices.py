@@ -21,11 +21,12 @@ from get_network_id import get_network_id
 
 
 def devices():
-    dashboard = meraki.DashboardAPI(lekey)
+    dashboard = meraki.DashboardAPI(api_key=lekey, 
+                                    output_log=False,
+                                    print_console=False)
+    # Get organization ID and network ID
     organization_id = get_org_id()
-    # print(f"muh organ: {organization_id}")
     network_id = get_network_id(organization_id) 
-    # print(f"muh net: {network_id}")
     devices = dashboard.networks.getNetworkDevices(network_id)
     import json; print(json.dumps(devices, indent=3))  # check output
     

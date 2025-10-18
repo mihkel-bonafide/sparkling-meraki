@@ -5,7 +5,10 @@ from lehost import MERAKI_DASHBOARD_API_KEY as lekey
 ORGANIZATION_NAME = "DevNet Sandbox"
 
 def get_org_id():
-    dashboard = meraki.DashboardAPI(lekey)
+    # create dashboard object
+    dashboard = meraki.DashboardAPI(api_key=lekey, 
+                                    output_log=False, 
+                                    print_console=False)
     organizations = dashboard.organizations.getOrganizations()  # get list of organizations 
     for org in organizations:
         if org['name'] == ORGANIZATION_NAME:

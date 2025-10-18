@@ -15,6 +15,7 @@ There has GOT to be better documentation for this somewhere, just not with Cisco
 
 """
 import meraki
+import json
 from lehost import MERAKI_DASHBOARD_API_KEY as lekey
 from get_org_id import get_org_id
 from get_network_id import get_network_id   
@@ -27,9 +28,13 @@ def devices():
     # Get organization ID and network ID
     organization_id = get_org_id()
     network_id = get_network_id(organization_id) 
+
+    # Get devices for the network
     devices = dashboard.networks.getNetworkDevices(network_id)
-    import json; print(json.dumps(devices, indent=3))  # check output
-    
+
+    # Write device info to a JSON file
+    with open('devices_output.json', 'w') as dev_file:
+        json.dump(devices, dev_file, indent=3)
     
 def main():
     devices()

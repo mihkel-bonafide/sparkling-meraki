@@ -1,17 +1,6 @@
 #!/bin/env python
 """
-IMPORTANT NOTE!!
-The documentation at developer.cisco is flat out incorrect as to how device info is returned via the Meraki Dashboard API.
-
-For reference, see: https://developer.cisco.com/meraki/api-v1/getting-started/#find-your-devices-and-their-serials
-^^^ this is wrong. 
-Their version: 
-response = dashboard.organizations.getOrganizationDevices({organizationId})  # this will 404-error you all day
-Correct version: 
-response = dashboard.networks.getNetworkDevices(organizationId) 
-
-Pay particular note of the fact that the SDK's negotiated path here is dashboard.networks, not dashboard.organizations.
-There has GOT to be better documentation for this somewhere, just not with Cisco, apparently.  10/16 MG 
+Get Meraki devices for a specific network and save to JSON file.
 
 """
 import meraki

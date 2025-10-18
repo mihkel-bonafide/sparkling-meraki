@@ -6,7 +6,9 @@ from get_org_id import get_org_id
 
 
 def get_network_id(org_id=None):
-    dashboard = meraki.DashboardAPI(lekey)
+    dashboard = meraki.DashboardAPI(api_key=lekey, 
+                                    output_log=False, 
+                                    print_console=False)
     org_id = get_org_id()
     networks = dashboard.organizations.getOrganizationNetworks(org_id)
     for net in networks:

@@ -1,4 +1,6 @@
 import meraki
+import os
+import yaml
 
 # API Configuration
 from lehost import MERAKI_DASHBOARD_API_KEY as API_KEY
@@ -42,13 +44,32 @@ def list_devices():
                 devices = dashboard.networks.getNetworkDevices(network['id'])
                 
                 for device in devices:
+                    # Additional device details can be written or printed as needed
                     print(f"- {device.get('name', 'Unnamed Device')} ({device['model']})")
                     print(f"  Serial: {device['serial']}")
                     print(f"  MAC: {device['mac']}")
                     print(f"  Firmware: {device.get('firmware', 'N/A')}")
                     print(f"  Status: {'Online' if device.get('status') == 'online' else 'Offline'}")
-                    # Additional device details can be printed here as needed
-                    # note to self: it would be nice to have this write the output to a YAML file
+                    
+                    # writes to meraki/devices.yaml
+                    device_entry = {
+                        "organization": ORGANIZATION_NAME,
+                        "organization_id": org_id,
+                        "network": {"id": network["id"], "name": network.get("name")},
+                        "device": {
+                            "name": device.get("name", "Unnamed Device"),
+                            "model": device.get("model"),
+                            "serial": device.get("serial"),
+                            "mac": device.get("mac"),
+                            "firmware": device.get("firmware", "N/A"),
+                            "status": "Online" if device.get("status") == "online" else "Offline",
+                        },
+                    }
+
+                    out_path = os.path.join(os.path.dirname(__file__), "devices.yaml")
+                    with open(out_path, "a", encoding="utf-8") as f:
+                        f.write("---\n")
+                        yaml.safe_dump(device_entry, f, sort_keys=False, default_flow_style=False, allow_unicode=True)
             except meraki.APIError as e:
                 print(f"Error fetching devices for network {network['name']}: {str(e)}")
                 

@@ -47,7 +47,8 @@ def list_devices():
                     print(f"  MAC: {device['mac']}")
                     print(f"  Firmware: {device.get('firmware', 'N/A')}")
                     print(f"  Status: {'Online' if device.get('status') == 'online' else 'Offline'}")
-                    
+                    # Additional device details can be printed here as needed
+                    # note to self: it would be nice to have this write the output to a YAML file
             except meraki.APIError as e:
                 print(f"Error fetching devices for network {network['name']}: {str(e)}")
                 
